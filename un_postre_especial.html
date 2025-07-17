@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tu Postre Especial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family:'Raleway', sans-serif;
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      color: white;
+      overflow-x: hidden;
+    }
+    section, header {
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .active {
+      display: flex !important;
+      animation: fadeIn 1s ease forwards;
+    }
+    .btn {
+      background: #ff6f91;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #ff3f6c;
+    }
+
+    .input-area {
+      margin-top: 2rem;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      width: 200px;
+      text-align: center;
+    }
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #ffb6c1;
+    }
+
+    .final {
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    .fade-img {
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      width: 300px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .fade-img.visible {
+      opacity: 1;
+    }
+    .continue-btn {
+      display: none;
+      margin-top: 20px;
+    }
+    .continue-btn.visible {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+<header id="intro" class="active">
+  <h1>Antes de tu postre especial...</h1>
+  <p>Tienes que desbloquearlo resolviendo algo sencillo.</p>
+  <p>¿Comenzamos?</p>
+  <button class="btn" onclick="showStage(1)">Comenzar</button>
+</header>
+
+<!-- Las secciones del juego -->
+<div id="game-container"></div>
+
+<!-- Etapa final -->
+<section class="stage" id="final-stage">
+  <h2>Postre desbloqueado! 🧁 </h2>
+  <div class="final">
+    <p><em>Mi postre especial eres TÚ 🤍</em></p><br>
+    <p>Solo quería decirte que agradezco a Dios por mantenernos siempre en línea y en sintonía, por no perder el contacto y por ponerte en mi vida.</p>
+    <p>Me hacés feliz. Disfruto enormemente tu compañía, nuestras locuras y ocurrencias... no quiero que se acaben nunca.</p>
+    <p>Quiero agradecerte por estar conmigo, por bancarme en todo.</p>
+    <p>Eres divina y me encantas y Te amo.</p>
+    <p>Por esta razón soy tu novia... ¿y tú?</p><br>
+    <h3>¿Quieres ser mi novia solo hasta miércoles?</h3>
+    <h3>Dime... ¿Sí o No?</h3>
+    <div style="margin-top: 20px;">
+      <button class="btn" onclick="mostrarFinal('si')">Sí 💍</button>
+      <button class="btn" onclick="mostrarFinal('no')">No 😢</button>
+    </div>
+  </div>
+</section>
+
+<!-- Mensaje final -->
+<section class="stage" id="mensaje-stage">
+  <div id="mensaje-final" style="text-align:center;"></div><br>
+  <button class="btn" onclick="reiniciar()">Volver a empezar</button>
+</section>
+
+<script>
+const preguntas = [
+  {
+    texto: "¿Cuál fue nuestro primer viaje juntas?",
+    emoji: "⛴️",
+    respuestas: ["uruguay", "colonia"],
+    imagen: "foto1.jpg",
+    mensajeCorrecto: "Sí que sabes 🥳 El primero de muchos",
+    mensajeIncorrecto: "Casi casi... no era ese 😅"
+  },
+  {
+    texto: "¿Actividad que hemos disfrutado más?",
+    emoji: "🛴 🚪 🛼",
+    respuestas: ["monopatin", "patinar", "cine", "scape room", "escape room", "comer"],
+    imagen: "foto2.jpg",
+    mensajeCorrecto: "Adrenalina pura! Disfruto cada momento contigo y cada invento que hacemos",
+    mensajeIncorrecto: "Puede ser que esa no la tuve en cuenta.🥺"
+  },
+  {
+    texto: "¿Qué país visitaríamos si mañana ganamos un viaje?",
+    emoji: "🌍",
+    respuestas: ["grecia", "españa"],
+    imagen: "foto3.jpg",
+    mensajeCorrecto: "Contigo todo mi amor a donde sea 🛫",
+    mensajeIncorrecto: "Ummm sera que me equivoque y es India?😵"
+  },
+  {
+    texto: "¿Qué frase dijimos y se volvió un clásico?",
+    emoji: "😅",
+    respuestas: ["verga", "veeerga","carita de bazar","voy pa arriba"],
+    imagen: "foto4.jpg",
+    mensajeCorrecto: "Me encanta tu locura mi amor,<br>hasta en las locuras hacemos buen equipo,<br>como las cerecitas 🍒",
+    mensajeIncorrecto: "Puede ser... pero no es esa😒"
+  },
+  {
+    texto: "Completa la frase: 'Te quiero hasta...🤍'",
+    emoji: "",
+    respuestas: ["miércoles", "miercoles"],
+    imagen: "foto5.jpg",
+    mensajeCorrecto: "Hasta el infinito mi amor! ♾️✨",
+    mensajeIncorrecto: "Puede ser... pero no es esa😒"
+  }
+];
+
+function showStage(n) {
+  document.querySelectorAll('section, header').forEach(e => e.classList.remove('active'));
+  if (n === 1) document.getElementById('intro').style.display = 'none';
+  const nextStage = document.getElementById('stage' + n);
+  if (nextStage) nextStage.classList.add('active');
+}
+
+function generarEtapas() {
+  const contenedor = document.getElementById('game-container');
+  preguntas.forEach((p, i) => {
+    const num = i + 1;
+    const html = `
+    <section class="stage" id="stage${num}">
+      <h2>${p.texto}</h2>
+      <p>${p.emoji}</p>
+      <div class="input-area">
+        <input type="text" id="respuesta${num}">
+        <button class="btn" onclick="validar(${num})">Responder</button>
+        <div class="message" id="msg${num}"></div>
+        <img src="${p.imagen}" id="img${num}" class="fade-img" alt="Foto sorpresa"><br>
+        <button class="btn continue-btn" id="continuar${num}" onclick="showStage(${num + 1})">Continuar</button>
+      </div>
+    </section>`;
+    contenedor.insertAdjacentHTML("beforeend", html);
+  });
+}
+
+function validar(n) {
+  const input = document.getElementById(`respuesta${n}`).value.trim().toLowerCase();
+  const msg = document.getElementById(`msg${n}`);
+  const img = document.getElementById(`img${n}`);
+  const btn = document.getElementById(`continuar${n}`);
+  const p = preguntas[n - 1]; // la pregunta actual
+
+  if (p.respuestas.some(r => input.includes(r))) {
+    msg.innerHTML = p.mensajeCorrecto || '¡Correcto!';
+    img.classList.add('visible');
+    setTimeout(() => {
+      btn.classList.add('visible');
+    }, 1500);
+  } else {
+    msg.textContent = p.mensajeIncorrecto || 'Intentalo de nuevo 💡';
+  }
+
+  // Si es la última pregunta, pasar a final
+  if (n === preguntas.length) {
+    btn.setAttribute("onclick", "showStageFinal()");
+  }
+}
+
+function showStageFinal() {
+  document.querySelectorAll('section').forEach(e => e.classList.remove('active'));
+  document.getElementById('final-stage').classList.add('active');
+}
+
+function mostrarFinal(opcion) {
+  document.querySelectorAll('section').forEach(e => e.classList.remove('active'));
+  const msg = document.getElementById('mensaje-final');
+  const stage = document.getElementById('mensaje-stage');
+  msg.innerHTML = '';
+  if (opcion === 'si') {
+    msg.innerHTML = `
+      <h2 style="color: #ffb6c1;">TE AMO</h2>
+      <p>Eres mi amor bonito 💫</p>
+      <img src="foto6.jpg" class="fade-img visible" alt="Foto final">`;
+  } else {
+    msg.innerHTML = `<p style="color: #ffb6c1;">No pasa nada, ¿sí? Lo resolveremos... 💔</p>`;
+  }
+  stage.classList.add('active');
+}
+
+function reiniciar() {
+  document.querySelectorAll('section, header').forEach(e => e.classList.remove('active'));
+  document.getElementById('intro').classList.add('active');
+  document.getElementById('intro').style.display = 'flex';
+
+  // Reset campos
+  preguntas.forEach((_, i) => {
+    const n = i + 1;
+    document.getElementById(`respuesta${n}`).value = '';
+    document.getElementById(`msg${n}`).textContent = '';
+    document.getElementById(`img${n}`).classList.remove('visible');
+    document.getElementById(`continuar${n}`).classList.remove('visible');
+  });
+}
+
+generarEtapas();
+</script>
+
+</body>
+</html>
