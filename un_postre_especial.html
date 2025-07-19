@@ -13,8 +13,8 @@
     }
     body {
       font-family:'Raleway', sans-serif;
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      color: white;
+      background: linear-gradient(to right, #79764f, #d1d1b1, #9b936d);
+      color: rgb(48, 46, 46);
       overflow-x: hidden;
     }
     section, header {
@@ -31,7 +31,7 @@
       animation: fadeIn 1s ease forwards;
     }
     .btn {
-      background: #ff6f91;
+      background: #7cbe75;
       color: white;
       border: none;
       padding: 1rem 2rem;
@@ -42,7 +42,7 @@
       margin-top: 10px;
     }
     .btn:hover {
-      background: #ff3f6c;
+      background: #91d684;
     }
 
     .input-area {
@@ -60,7 +60,7 @@
     .message {
       margin-top: 1rem;
       font-weight: bold;
-      color: #ffb6c1;
+      color: #4e4b4b;
     }
 
     .final {
@@ -139,7 +139,7 @@ const preguntas = [
     emoji: "🛴 🚪 🛼",
     respuestas: ["monopatin", "patinar", "cine", "scape room", "escape room", "comer"],
     imagen: "foto2.jpg",
-    mensajeCorrecto: "Adrenalina pura! Disfruto cada momento contigo y cada invento que hacemos",
+    mensajeCorrecto: "Disfruto cada momento contigo y cada invento que hacemos. <br> Amo tu locura y lo espontánea que eres.",
     mensajeIncorrecto: "Puede ser que esa no la tuve en cuenta.🥺"
   },
   {
@@ -230,11 +230,11 @@ function mostrarFinal(opcion) {
   msg.innerHTML = '';
   if (opcion === 'si') {
     msg.innerHTML = `
-      <h2 style="color: #ffb6c1;">TE AMO</h2>
+      <h2 style="color: #7e786b;">TE AMO</h2>
       <p>Eres mi amor bonito 💫</p>
       <img src="foto6.jpg" class="fade-img visible" alt="Foto final">`;
   } else {
-    msg.innerHTML = `<p style="color: #ffb6c1;">No pasa nada, ¿sí? Lo resolveremos... 💔</p>`;
+    msg.innerHTML = `<p style="color: #7e786b;">No pasa nada, ¿sí? Lo resolveremos... 💔</p>`;
   }
   stage.classList.add('active');
 }
